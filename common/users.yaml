@@ -1,0 +1,13 @@
+# 接口自动化账号配置文件
+ordinary:
+  description: 普通账户
+  accounts:
+    - 1
+    - 2
+    - 3
+Special:
+  description: 具有群组权限的
+  accounts:
+    - 1
+    - 2
+    - 3

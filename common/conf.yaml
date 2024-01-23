@@ -1,0 +1,12 @@
+host:
+  # 测试环境
+  api_test: https://mos-test.metathought.cc
+
+# 数据库相关配置
+mysql_db:
+  # 数据库开关
+  switch:
+  host:
+  user:
+  password:
+  port:

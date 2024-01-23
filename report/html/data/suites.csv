@@ -1,0 +1,3 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Tue Jan 23 15:31:22 CST 2024","Tue Jan 23 15:31:22 CST 2024","595","testcases.login","test_login_page","TestLoginPage","","","test_password_login[密码错误登录]","该用例是用于密码登录场景"
+"passed","Tue Jan 23 15:31:21 CST 2024","Tue Jan 23 15:31:22 CST 2024","677","testcases.login","test_login_page","TestLoginPage","","","test_password_login[正常登录]","该用例是用于密码登录场景"
