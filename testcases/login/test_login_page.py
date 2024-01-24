@@ -29,7 +29,7 @@ class TestLoginPage(LoginPage):
         result = self.password_login(req_data)
         assert result.response.status_code == 200
         assert result.code == except_code
-        assert except_msg in result.msg if result.msg is not None else except_msg == result.msg
+        assert except_msg in result.msg if result.msg is not None else result.msg == except_msg
         logger.info("*************** 结束执行用例 ***************")
 
 
