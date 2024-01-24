@@ -22,7 +22,7 @@ def run():
            "--reruns=3", "--reruns-delay=2"
     """
     # 生成测试html报告
-    os.system(r"allure generate ./report -o ./report/html -clean")
+    os.system(r"allure generate ./report -o ./report/html --clean")
 
     # 程序运行之后，自动启动报告，如果不想启动报告，可注释这段代码
     os.system(f"allure serve ./report -h 127.0.0.1 -p 9999")
