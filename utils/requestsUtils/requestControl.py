@@ -7,8 +7,8 @@ from utils.otherUtils.allure_tools import allure_step_no, allure_step
 
 class RequestControl:
 
-    def __init__(self, url):
-        self.url = url
+    def __init__(self, api_root_url):
+        self.api_root_url = api_root_url
         self.session = requests.session()
 
     def get(self, url, **kwargs):
@@ -27,7 +27,7 @@ class RequestControl:
         return self.request(url, "PATCH", data, **kwargs)
 
     def request(self, url, method, data=None, json=None, **kwargs):
-        # url = self.api_root_url + url
+        url = self.api_root_url + url
         headers = dict(**kwargs).get("headers")
         params = dict(**kwargs).get("params")
         files = dict(**kwargs).get("params")
@@ -53,7 +53,6 @@ class RequestControl:
     def request_log(self, url, method, data=None, json=None, params=None, headers=None, files=None, cookies=None, **kwargs):
         logger.info("接口请求地址 ==>> {}".format(url))
         logger.info("接口请求方式 ==>> {}".format(method))
-        # Python3中，json在做dumps操作时，会将中文转换成unicode编码，因此设置 ensure_ascii=False
         logger.info("接口请求头 ==>> {}".format(complexjson.dumps(headers, indent=4, ensure_ascii=False)))
         logger.info("接口请求 params 参数 ==>> {}".format(complexjson.dumps(params, indent=4, ensure_ascii=False)))
         logger.info("接口请求体 data 参数 ==>> {}".format(complexjson.dumps(data, indent=4, ensure_ascii=False)))
@@ -65,9 +64,9 @@ class RequestControl:
         """ 在allure中记录请求数据 """
         allure_step_no("接口请求地址 ==>> {}".format(url))
         allure_step_no("接口请求方式 ==>> {}".format(method))
-        allure_step("接口请求头 ==>> {}".format(complexjson.dumps(headers, indent=4, ensure_ascii=False)))
-        allure_step("接口请求 params 参数 ==>> {}".format(complexjson.dumps(params, indent=4, ensure_ascii=False)))
-        allure_step("接口请求体 data 参数 ==>> {}".format(complexjson.dumps(data, indent=4, ensure_ascii=False)))
-        allure_step("接口请求体 json 参数 ==>> {}".format(complexjson.dumps(json, indent=4, ensure_ascii=False)))
-        allure_step("接口上传附件 files 参数 ==>> {}".format(files))
-        allure_step_no("接口 cookies 参数 ==>> {}".format(complexjson.dumps(cookies, indent=4, ensure_ascii=False)))
+        allure_step("接口请求头 ==>> ：", complexjson.dumps(headers, indent=4))
+        allure_step("接口请求 params 参数 ==>> ：", complexjson.dumps(params, indent=4))
+        allure_step("接口请求体 data 参数 ==>> ：", complexjson.dumps(data, indent=4))
+        allure_step("接口请求体 json 参数 ==>> ：", complexjson.dumps(json, indent=4))
+        allure_step("接口上传附件 files 参数 ==>> ：", files)
+        allure_step_no("接口 cookies 参数 ==>> {}".format(complexjson.dumps(cookies, indent=4)))

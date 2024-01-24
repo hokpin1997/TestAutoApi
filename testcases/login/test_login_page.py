@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
 import allure
 import pytest
+from operation.login import password_login
 from utils.logUtils.logger import logger
-from page.Login.login import LoginPage
 from utils.otherUtils.read_data import GetYamlData, ensure_path_sep
 
 yaml_data = GetYamlData(ensure_path_sep("data/Login/test_login.yaml")).get_yaml_data()
@@ -14,7 +14,7 @@ def step_1():
 
 
 @allure.epic("登录页面")
-class TestLoginPage(LoginPage):
+class TestLoginPage:
 
     @allure.feature("密码登录")
     @allure.description("该用例是用于密码登录场景")
@@ -26,7 +26,7 @@ class TestLoginPage(LoginPage):
         req_data = test_data["req_data"]
         except_code = test_data["except_code"]
         except_msg = test_data["except_msg"]
-        result = self.password_login(req_data)
+        result = password_login(req_data)
         assert result.response.status_code == 200
         assert result.code == except_code
         assert except_msg in result.msg if result.msg is not None else result.msg == except_msg
