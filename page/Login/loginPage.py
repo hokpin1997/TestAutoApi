@@ -12,8 +12,8 @@ class LoginPage(RequestControl):
     def password_login(self, **kwargs):
         return self.post("/user/login", **kwargs)
 
-    def verification_code(self):
-        pass
+    def verification_code(self, **kwargs):
+        return self.post("/user/login", **kwargs)
 
     def forget_password(self):
         pass

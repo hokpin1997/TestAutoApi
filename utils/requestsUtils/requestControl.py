@@ -68,5 +68,6 @@ class RequestControl:
         allure_step("接口请求 params 参数 ==>> ：", complexjson.dumps(params, indent=4))
         allure_step("接口请求体 data 参数 ==>> ：", complexjson.dumps(data, indent=4))
         allure_step("接口请求体 json 参数 ==>> ：", complexjson.dumps(json, indent=4))
-        allure_step("接口上传附件 files 参数 ==>> ：", files)
+        if files:
+            allure_step("接口上传附件 files 参数 ==>> ：", files)
         allure_step_no("接口 cookies 参数 ==>> {}".format(complexjson.dumps(cookies, indent=4)))
