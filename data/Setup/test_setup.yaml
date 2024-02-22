@@ -1,0 +1,10 @@
+# detail：场景描述
+# req_data：接口请求参数
+# expect_code：预期响应码
+# expect_msg：预期响应msg
+test_cancel_account:
+  - detail: 注销已存在账号，注销成功
+    req_data:
+      phone: "60000000"
+    expect_code: 200
+    expect_msg:
