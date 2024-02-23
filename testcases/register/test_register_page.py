@@ -30,13 +30,18 @@ class TestRegisterPage:
         detail = test_data["detail"]
         logger.info(f"*************** {detail} ***************")
         step_1("注册账号")
-        req_data = test_data["req_data"]
-        expect_code = test_data["expect_code"]
-        expect_msg = test_data["expect_msg"]
-        result = phone_register(req_data)
-        assert result.response.status_code == 200
-        assert result.code == expect_code
-        assert expect_msg in result.msg if result.msg is not None else result.msg == expect_msg
+        expect_code = test_data["assert_data"]["expect_code"]
+        expect_msg = test_data["assert_data"]["expect_msg"]
+        resData = phone_register(test_data)
+        assert resData.status_code == 200
+
+        # 业务code
+        business_code = resData.response_json["code"]
+        assert business_code == expect_code
+
+        # msg 可能为none
+        res_msg = resData.response_json.get("message")
+        assert expect_msg in res_msg if res_msg is not None else res_msg == expect_msg
         logger.info("*************** 结束执行用例 ***************")
 
 

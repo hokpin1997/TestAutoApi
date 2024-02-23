@@ -20,22 +20,29 @@ def step_1(step):
 @allure.epic("设置页面")
 class TestSetupPage:
 
-    @allure.feature("设置页")
+    @allure.feature("注销")
     @allure.description("注销账号场景")
     @pytest.mark.parametrize("test_data", test_data["test_cancel_account"],
                              ids=[i['detail'] for i in test_data["test_cancel_account"]])
-    def test_cancel_account(self, test_data):
+    def test_cancel_account(self, test_data, work_login_init):
         logger.info("*************** 开始执行用例 ***************")
+        work_login_init(test_data)
+
         detail = test_data["detail"]
         logger.info(f"*************** {detail} ***************")
         step_1("注销账号")
-        req_data = test_data["req_data"]
-        expect_code = test_data["expect_code"]
-        expect_msg = test_data["expect_msg"]
-        result = cancel_account(req_data)
-        assert result.response.status_code == 200
-        assert result.code == expect_code
-        assert expect_msg in result.msg if result.msg is not None else result.msg == expect_msg
+        expect_code = test_data["assert_data"]["expect_code"]
+        expect_msg = test_data["assert_data"]["expect_msg"]
+        resData = cancel_account(test_data)
+        assert resData.status_code == 200
+
+        # 业务code
+        business_code = resData.response_json["code"]
+        assert business_code == expect_code
+
+        # msg 可能为none
+        res_msg = resData.response_json.get("message")
+        assert expect_msg in res_msg if res_msg is not None else res_msg == expect_msg
         logger.info("*************** 结束执行用例 ***************")
 
 

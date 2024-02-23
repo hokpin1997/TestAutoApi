@@ -1,11 +1,19 @@
 # -*- coding:utf-8 -*-
-from page.Login.loginPage import loginPage
+from page.Login.loginPage import LoginPage
 from utils.logUtils.logger import logger
 from utils.resultUtils.result_base import ResultBase
+from utils.otherUtils.read_data import GetYamlData, ensure_path_sep
+
+config = GetYamlData(ensure_path_sep("common/conf.yaml")).get_yaml_data()
+api_test_url = config["host"]["api_test"]
 
 
-def password_login(req_data):
-    result = ResultBase()
+def password_login(test_data):
+    is_dependence_login = test_data.get("is_dependence_login")
+    if is_dependence_login:
+        req_data = test_data["dependence_login"]["req_data"]
+    else:
+        req_data = test_data.get("req_data")
     dialCode = req_data.get("dialCode")
     password = req_data.get("password")
     phone = req_data.get("phone")
@@ -25,23 +33,12 @@ def password_login(req_data):
     headers = {
         "Content-Type": "application/json"
     }
-    res = loginPage.password_login(json=json_data, headers=headers)
-    res_json = res.json()
-    if res_json["code"] == 0:
-        result.success = True
-        result.token = res_json["data"]["token"]
-        result.wecloudImToken = res_json["data"]["wecloudImToken"]
-    else:
-        result.error = "接口返回码是 【 {} 】, 返回信息：{} ".format(res_json["code"], res_json["message"])
-    result.msg = res_json["message"]
-    result.code = res_json["code"]
-    result.response = res
-    logger.info("返回结果 ==>> {}".format(result.response.text))
-    return result
+    resData = LoginPage(api_test_url, test_data).password_login(json=json_data, headers=headers)
+    return resData
 
 
-def verification_code(req_data):
-    result = ResultBase()
+def verification_code(test_data):
+    req_data = test_data.get("req_data")
     dialCode = req_data.get("dialCode")
     captcha_code = req_data.get("captcha_code")
     phone = req_data.get("phone")
@@ -57,19 +54,8 @@ def verification_code(req_data):
     headers = {
         "Content-Type": "application/json"
     }
-    res = loginPage.verification_code(json=json_data, headers=headers)
-    res_json = res.json()
-    if res_json["code"] == 0:
-        result.success = True
-        result.token = res_json["data"]["token"]
-        result.wecloudImToken = res_json["data"]["wecloudImToken"]
-    else:
-        result.error = "接口返回码是 【 {} 】, 返回信息：{} ".format(res_json["code"], res_json["message"])
-    result.msg = res_json["message"]
-    result.code = res_json["code"]
-    result.response = res
-    logger.info("返回结果 ==>> {}".format(result.response.text))
-    return result
+    resData = LoginPage(api_test_url, test_data).password_login(json=json_data, headers=headers)
+    return resData
 
 
 def forget_password():

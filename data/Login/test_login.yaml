@@ -9,24 +9,27 @@ test_password_login:
       password: "flgpGS1oMqfvM4ewFrQSBg=="
       phone: "60000001"
       deviceType: 1
-    expect_code: 200
-    expect_msg:
+    assert_data:
+      expect_code: 200
+      expect_msg:
   - detail: 账号正确密码错误，登录失败
     req_data:
       dialCode: 855
       password: "sfsfdsdfsf"
       phone: "60000001"
       deviceType: 1
-    expect_code: 500
-    expect_msg: "密码错误"
+    assert_data:
+      expect_code: 500
+      expect_msg: "密码错误"
   - detail: 账号错误密码正确，登录失败
     req_data:
       dialCode: 855
       password: "flgpGS1oMqfvM4ewFrQSBg=="
       phone: "60000001646456"
       deviceType: 1
-    expect_code: 500
-    expect_msg: "该手机号码还未注册"
+    assert_data:
+      expect_code: 500
+      expect_msg: "该手机号码还未注册"
 
 test_verification_code:
   - detail: 验证码正确，登录成功
@@ -35,13 +38,15 @@ test_verification_code:
       captcha_code: "6666"
       phone: "60000001"
       deviceType: 1
-    expect_code: 200
-    expect_msg:
+    assert_data:
+      expect_code: 200
+      expect_msg:
   - detail: 验证码错误，登录失败
     req_data:
       dialCode: 855
       captcha_code: "6661"
       phone: "60000001"
       deviceType: 1
-    expect_code: 500
-    expect_msg: "验证码错误"
+    assert_data:
+      expect_code: 500
+      expect_msg: "验证码错误"

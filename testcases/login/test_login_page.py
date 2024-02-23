@@ -29,13 +29,18 @@ class TestLoginPage:
         detail = test_data["detail"]
         logger.info(f"*************** {detail} ***************")
         step_1("密码登录")
-        req_data = test_data["req_data"]
-        expect_code = test_data["expect_code"]
-        expect_msg = test_data["expect_msg"]
-        result = password_login(req_data)
-        assert result.response.status_code == 200
-        assert result.code == expect_code
-        assert expect_msg in result.msg if result.msg is not None else result.msg == expect_msg
+        expect_code = test_data["assert_data"]["expect_code"]
+        expect_msg = test_data["assert_data"]["expect_msg"]
+        resData = password_login(test_data)
+        assert resData.status_code == 200
+
+        # 业务code
+        business_code = resData.response_json["code"]
+        assert business_code == expect_code
+
+        # msg 可能为none
+        res_msg = resData.response_json.get("message")
+        assert expect_msg in res_msg if res_msg is not None else res_msg == expect_msg
         logger.info("*************** 结束执行用例 ***************")
 
     @allure.feature("验证码登录")
@@ -47,13 +52,18 @@ class TestLoginPage:
         detail = test_data["detail"]
         logger.info(f"*************** {detail} ***************")
         step_1("验证码登录")
-        req_data = test_data["req_data"]
-        expect_code = test_data["expect_code"]
-        expect_msg = test_data["expect_msg"]
-        result = verification_code(req_data)
-        assert result.response.status_code == 200
-        assert result.code == expect_code
-        assert expect_msg in result.msg if result.msg is not None else result.msg == expect_msg
+        expect_code = test_data["assert_data"]["expect_code"]
+        expect_msg = test_data["assert_data"]["expect_msg"]
+        resData = verification_code(test_data)
+        assert resData.status_code == 200
+
+        # 业务code
+        business_code = resData.response_json["code"]
+        assert business_code == expect_code
+
+        # msg 可能为none
+        res_msg = resData.response_json.get("message")
+        assert expect_msg in res_msg if res_msg is not None else res_msg == expect_msg
         logger.info("*************** 结束执行用例 ***************")
 
 
