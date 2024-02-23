@@ -3,10 +3,13 @@ import allure
 import pytest
 from operation.register import phone_register
 from utils.logUtils.logger import logger
-from utils.otherUtils.read_data import GetYamlData, ensure_path_sep
+from utils.otherUtils.read_data import GetTestCase, ensure_path_sep
 from utils.otherUtils.allure_tools import allure_step_no, allure_step
 
-yaml_data = GetYamlData(ensure_path_sep("data/Register/test_register.yaml")).get_yaml_data()
+
+case_ids = ['test_register']
+# 从缓存中读取用例数据
+test_data = GetTestCase.case_data(case_ids)
 
 
 def step_1(step):
@@ -20,8 +23,8 @@ class TestRegisterPage:
 
     @allure.feature("注册")
     @allure.description("注册账号场景")
-    @pytest.mark.parametrize("test_data", yaml_data["test_register"],
-                             ids=[i['detail'] for i in yaml_data["test_register"]])
+    @pytest.mark.parametrize("test_data", test_data["test_register"],
+                             ids=[i['detail'] for i in test_data["test_register"]])
     def test_register(self, test_data):
         logger.info("*************** 开始执行用例 ***************")
         detail = test_data["detail"]

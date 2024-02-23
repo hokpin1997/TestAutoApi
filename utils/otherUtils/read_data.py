@@ -3,6 +3,7 @@ import json
 import os
 import pytest
 import yaml
+from utils.cache_process.cache_control import CacheHandler
 from utils.logUtils.logger import logger
 
 
@@ -21,6 +22,22 @@ def ensure_path_sep(path):
         path = os.sep.join(path.split("\\"))
 
     return root_path() + os.path.sep + path
+
+
+def get_all_files(file_path):
+    """
+    获取所有文件路径
+    :param file_path: 目录路径
+    :return:
+    """
+    filenames = []
+    for root, dirs, files in os.walk(file_path):
+        for _file_path in files:
+            path = os.path.join(root, _file_path)
+            if 'yaml' in path or '.yml' in path:
+                filenames.append(path)
+
+    return filenames
 
 
 class GetYamlData:
@@ -48,6 +65,18 @@ class GetYamlData:
         else:
             logger.info("读到数据 ==>>  {} ".format(yaml_data))
             return yaml_data
+
+
+class GetTestCase:
+
+    @staticmethod
+    def case_data(case_id_lists):
+        case_dict = {}
+        for i in case_id_lists:
+            _data = CacheHandler.get_cache(i)
+            case_dict[i] = _data
+
+        return case_dict
 
 
 if __name__ == '__main__':

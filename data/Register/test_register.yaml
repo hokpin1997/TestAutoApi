@@ -24,3 +24,17 @@ test_register:
       verifyCode: "6666"
     expect_code: 500
     expect_msg: "该号码已被使用"
+
+test_register1:
+  - detail: 注册不存在的账号，注册成功
+    allureEpic: 开发平台接口
+    allureFeature: 个人信息模块
+    allureStory: 个人信息接口
+    req_data:
+      dialCode: "855"
+      password: "123456"
+      phone: "60000000"
+      firstName: "auto_0"
+      verifyCode: "6666"
+    expect_code: 200
+    expect_msg:
