@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from utils.otherUtils.read_data import ensure_path_sep, get_all_files, GetYamlData
+from utils.otherUtils.read_data import GetYamlData
 from utils.cache_process.cache_control import _cache_config, CacheHandler
+from utils.otherUtils.common import ensure_path_sep, get_all_files
 
 
 def write_case_process():

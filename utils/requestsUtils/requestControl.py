@@ -2,7 +2,7 @@
 import requests
 import json as complexjson
 from utils.cache_process.cache_control import CacheHandler
-from utils.logUtils.logger import logger
+from utils.logUtils.log_decorator import log_decorator
 from utils.otherUtils.allure_tools import allure_step_no, allure_step
 from utils.otherUtils.models import ResponseData
 
@@ -30,20 +30,16 @@ class RequestControl:
     def patch(self, url, data=None, **kwargs):
         return self.request(url, "PATCH", data, **kwargs)
 
+    @log_decorator(True)
     def request(self, url, method, data=None, json=None, **kwargs):
         url = self.api_root_url + url
         headers = kwargs.get("headers")
-        params = kwargs.get("params")
-        files = kwargs.get("files")
-        cookies = kwargs.get("cookies")
         is_dependence_login = kwargs.get("is_dependence_login")
         if is_dependence_login:
             login_token = CacheHandler.get_cache("login_token")
             headers["Authorization"] = login_token
         if kwargs.get("is_dependence_login"):
             del kwargs['is_dependence_login']
-        self.request_log(url, method, data, json, params, headers, files, cookies)
-        self.request_allure_step(url, method, data, json, params, headers, files, cookies)
         if method == "GET":
             self.res = self.session.get(url, **kwargs)
         elif method == "POST":
@@ -67,7 +63,7 @@ class RequestControl:
             "url": res.url,
             "is_dependence_login": yaml_data.get("is_dependence_login"),
             "detail": yaml_data.get("detail"),
-            "response_body": res,
+            "request_body": yaml_data.get("req_data"),
             "response_json": res.json(),
             "response_text": res.text,
             "method": res.request.method,
@@ -89,24 +85,3 @@ class RequestControl:
         except AttributeError:
             return 0.00
 
-    def request_log(self, url, method, data=None, json=None, params=None, headers=None, files=None, cookies=None, **kwargs):
-        logger.info("接口请求地址 ==>> {}".format(url))
-        logger.info("接口请求方式 ==>> {}".format(method))
-        logger.info("接口请求头 ==>> {}".format(complexjson.dumps(headers, indent=4, ensure_ascii=False)))
-        logger.info("接口请求 params 参数 ==>> {}".format(complexjson.dumps(params, indent=4, ensure_ascii=False)))
-        logger.info("接口请求体 data 参数 ==>> {}".format(complexjson.dumps(data, indent=4, ensure_ascii=False)))
-        logger.info("接口请求体 json 参数 ==>> {}".format(complexjson.dumps(json, indent=4, ensure_ascii=False)))
-        logger.info("接口上传附件 files 参数 ==>> {}".format(files))
-        logger.info("接口 cookies 参数 ==>> {}".format(complexjson.dumps(cookies, indent=4, ensure_ascii=False)))
-
-    def request_allure_step(self, url, method, data=None, json=None, params=None, headers=None, files=None, cookies=None):
-        """ 在allure中记录请求数据 """
-        allure_step_no("接口请求地址 ==>> {}".format(url))
-        allure_step_no("接口请求方式 ==>> {}".format(method))
-        allure_step("接口请求头 ==>> ：", complexjson.dumps(headers, indent=4))
-        allure_step("接口请求 params 参数 ==>> ：", complexjson.dumps(params, indent=4))
-        allure_step("接口请求体 data 参数 ==>> ：", complexjson.dumps(data, indent=4))
-        allure_step("接口请求体 json 参数 ==>> ：", complexjson.dumps(json, indent=4))
-        if files:
-            allure_step("接口上传附件 files 参数 ==>> ：", files)
-        allure_step_no("接口 cookies 参数 ==>> {}".format(complexjson.dumps(cookies, indent=4)))

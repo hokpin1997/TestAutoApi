@@ -7,7 +7,7 @@ class ResponseData(BaseModel):
     url: Text
     is_dependence_login: Union[None, bool, Text]
     detail: Text
-    response_body: Any
+    request_body: Any
     response_text: Any
     response_json: Any
     method: Text

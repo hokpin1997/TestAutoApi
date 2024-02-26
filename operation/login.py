@@ -1,7 +1,5 @@
 # -*- coding:utf-8 -*-
 from page.Login.loginPage import LoginPage
-from utils.logUtils.logger import logger
-from utils.resultUtils.result_base import ResultBase
 from utils.otherUtils.read_data import GetYamlData, ensure_path_sep
 
 config = GetYamlData(ensure_path_sep("common/conf.yaml")).get_yaml_data()

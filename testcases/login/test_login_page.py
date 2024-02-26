@@ -2,7 +2,6 @@
 import allure
 import pytest
 from operation.login import password_login, verification_code
-from utils.logUtils.logger import logger
 from utils.otherUtils.read_data import GetTestCase
 from utils.otherUtils.allure_tools import allure_step_no
 
@@ -25,10 +24,6 @@ class TestLoginPage:
     @pytest.mark.parametrize("test_data", test_data["test_password_login"],
                              ids=[i['detail'] for i in test_data["test_password_login"]])
     def test_password_login(self, test_data):
-        logger.info("*************** 开始执行用例 ***************")
-        detail = test_data["detail"]
-        logger.info(f"*************** {detail} ***************")
-        step_1("密码登录")
         expect_code = test_data["assert_data"]["expect_code"]
         expect_msg = test_data["assert_data"]["expect_msg"]
         resData = password_login(test_data)
@@ -41,17 +36,12 @@ class TestLoginPage:
         # msg 可能为none
         res_msg = resData.response_json.get("message")
         assert expect_msg in res_msg if res_msg is not None else res_msg == expect_msg
-        logger.info("*************** 结束执行用例 ***************")
 
     @allure.feature("验证码登录")
     @allure.description("验证码登录场景")
     @pytest.mark.parametrize("test_data", test_data["test_verification_code"],
                              ids=[i['detail'] for i in test_data["test_verification_code"]])
     def test_verification_code(self, test_data):
-        logger.info("*************** 开始执行用例 ***************")
-        detail = test_data["detail"]
-        logger.info(f"*************** {detail} ***************")
-        step_1("验证码登录")
         expect_code = test_data["assert_data"]["expect_code"]
         expect_msg = test_data["assert_data"]["expect_msg"]
         resData = verification_code(test_data)
@@ -64,7 +54,6 @@ class TestLoginPage:
         # msg 可能为none
         res_msg = resData.response_json.get("message")
         assert expect_msg in res_msg if res_msg is not None else res_msg == expect_msg
-        logger.info("*************** 结束执行用例 ***************")
 
 
 if __name__ == '__main__':
