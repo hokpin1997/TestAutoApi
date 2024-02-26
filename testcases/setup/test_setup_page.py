@@ -1,12 +1,12 @@
 # -*- coding:utf-8 -*-
 import allure
 import pytest
-from operation.setup import cancel_account
 from utils.logUtils.log_control import INFO
 from utils.otherUtils.read_data import GetTestCase
 from utils.otherUtils.allure_tools import allure_step_no
+from utils.requestsUtils.request_control import RequestControl
 
-case_ids = ['test_cancel_account']
+case_ids = ['test_cancel_account_01']
 # 从缓存中读取用例数据
 test_data = GetTestCase.case_data(case_ids)
 
@@ -22,14 +22,13 @@ class TestSetupPage:
 
     @allure.feature("注销")
     @allure.description("注销账号场景")
-    @pytest.mark.parametrize("test_data", test_data["test_cancel_account"],
-                             ids=[i['detail'] for i in test_data["test_cancel_account"]])
-    def test_cancel_account(self, test_data, work_login_init):
-        step_1("获取注销账号token")
-        work_login_init(test_data)
+    @pytest.mark.parametrize("test_data", test_data,
+                             ids=[i['detail'] for i in test_data])
+    def test_cancel_account(self, test_data):
+        # step_1("获取注销账号token")
         expect_code = test_data["assert_data"]["expect_code"]
         expect_msg = test_data["assert_data"]["expect_msg"]
-        resData = cancel_account(test_data)
+        resData = RequestControl(test_data).request()
         assert resData.status_code == 200
 
         # 业务code

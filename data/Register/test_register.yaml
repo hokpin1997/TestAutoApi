@@ -1,24 +1,40 @@
 # detail：场景描述
 # req_data：接口请求参数
 # assert_data：断言部分
-test_register:
-  - detail: 注册不存在的账号，注册成功
+test_register_01:
+    detail: 注册不存在的账号，注册成功
+    url: /user/register
+    method: POST
+    headers:
+      Content-Type: application/json;
+    requestType: json
     req_data:
       dialCode: "855"
       password: "123456"
       phone: "60000000"
       firstName: "auto_0"
       verifyCode: "6666"
+    dependence_case:
+    dependence_case_data:
     assert_data:
       expect_code: 200
       expect_msg:
-  - detail: 注册已存在的账号，注册失败
+
+test_register_02:
+    detail: 注册已存在的账号，注册失败
+    url: /user/register
+    method: POST
+    headers:
+      Content-Type: application/json;
+    requestType: json
     req_data:
       dialCode: "855"
       password: "123456"
       phone: "60000001"
       firstName: "auto_0"
       verifyCode: "6666"
+    dependence_case:
+    dependence_case_data:
     assert_data:
       expect_code: 500
       expect_msg: "该号码已被使用"

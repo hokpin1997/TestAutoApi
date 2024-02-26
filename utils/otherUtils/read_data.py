@@ -40,12 +40,12 @@ class GetTestCase:
 
     @staticmethod
     def case_data(case_id_lists):
-        case_dict = {}
+        case_list = []
         for i in case_id_lists:
             _data = CacheHandler.get_cache(i)
-            case_dict[i] = _data
+            case_list.append(_data)
 
-        return case_dict
+        return case_list
 
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 from utils.otherUtils.read_data import GetYamlData, ensure_path_sep
-from utils.requestsUtils.requestControl import RequestControl
+from utils.requestsUtils.request_control import RequestControl
 
 
 class RegisterPage(RequestControl):

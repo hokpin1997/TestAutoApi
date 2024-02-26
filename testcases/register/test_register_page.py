@@ -1,13 +1,12 @@
 # -*- coding:utf-8 -*-
 import allure
 import pytest
-from operation.register import phone_register
 from utils.otherUtils.read_data import GetTestCase
 from utils.otherUtils.allure_tools import allure_step_no
 from utils.logUtils.log_control import INFO
+from utils.requestsUtils.request_control import RequestControl
 
-
-case_ids = ['test_register']
+case_ids = ["test_register_01", "test_register_02"]
 # 从缓存中读取用例数据
 test_data = GetTestCase.case_data(case_ids)
 
@@ -23,12 +22,12 @@ class TestRegisterPage:
 
     @allure.feature("注册")
     @allure.description("注册账号场景")
-    @pytest.mark.parametrize("test_data", test_data["test_register"],
-                             ids=[i['detail'] for i in test_data["test_register"]])
+    @pytest.mark.parametrize("test_data", test_data,
+                             ids=[i['detail'] for i in test_data])
     def test_register(self, test_data):
         expect_code = test_data["assert_data"]["expect_code"]
         expect_msg = test_data["assert_data"]["expect_msg"]
-        resData = phone_register(test_data)
+        resData = RequestControl(test_data).request()
         assert resData.status_code == 200
 
         # 业务code

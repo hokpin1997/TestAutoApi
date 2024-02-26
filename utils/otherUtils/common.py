@@ -35,3 +35,16 @@ def get_all_files(file_path):
     return filenames
 
 
+def jsonpath_replace(change_data, key_name, data_switch=None):
+    """处理jsonpath数据"""
+    _new_data = key_name + ''
+    for i in change_data:
+        if i == '$':
+            pass
+        elif data_switch is None and i == "data":
+            _new_data += '.data'
+        elif i[0] == '[' and i[-1] == ']':
+            _new_data += "[" + i[1:-1] + "]"
+        else:
+            _new_data += '[' + '"' + i + '"' + "]"
+    return _new_data

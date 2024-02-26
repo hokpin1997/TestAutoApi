@@ -1,19 +1,37 @@
-# detail：场景描述
-# req_data：请求参数
-# assert_data: 断言部分
-# is_dependence_login: 是否依赖登录token
-# dependence_login：依赖登录账号信息
-test_cancel_account:
-  - detail: 注销已存在账号，注销成功
-    is_dependence_login: True
-    dependence_login:
-      req_data:
-        dialCode: 855
-        password: "flgpGS1oMqfvM4ewFrQSBg=="
-        phone: "60000000"
-        deviceType: 1
-    req_data:
-      phone: "60000000"
-    assert_data:
-      expect_code: 200
-      expect_msg:
+test_cancel_account_01:
+  detail: 注销已存在账号，注销成功
+  url: /user/cancellation
+  method: POST
+  headers:
+    Content-Type: application/json;
+    Authorization: $cache{login_01_token}
+  requestType: json
+  req_data:
+    phone: "60000000"
+  dependence_case: True
+  dependence_case_data:
+    - case_id: test_register_01
+      dependence_login:
+      dependent_data:
+        - dependent_type: request
+    - case_id: test_password_login_01
+      is_dependence_login: True
+      dependence_login:
+        url: /user/login
+        method: POST
+        headers:
+          Content-Type: application/json;
+        requestType: json
+        req_data:
+          loginType: 0
+          dialCode: 855
+          password: "flgpGS1oMqfvM4ewFrQSBg=="
+          phone: "60000000"
+          deviceType: 1
+      dependent_data:
+        - dependent_type: response
+          jsonpath: $.data.token
+          set_cache: login_01_token
+  assert_data:
+    expect_code: 200
+    expect_msg:

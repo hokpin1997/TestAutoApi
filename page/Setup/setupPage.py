@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from utils.requestsUtils.requestControl import RequestControl
+from utils.requestsUtils.request_control import RequestControl
 
 
 class SetupPage(RequestControl):
