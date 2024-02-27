@@ -6,7 +6,7 @@ from utils.otherUtils.read_data import GetTestCase
 from utils.otherUtils.allure_tools import allure_step_no
 from utils.requestsUtils.request_control import RequestControl
 
-case_ids = ['test_cancel_account_01']
+case_ids = ['test_password_login_01', "test_password_login_02", "test_password_login_03"]
 # 从缓存中读取用例数据
 test_data = GetTestCase.case_data(case_ids)
 
@@ -17,15 +17,14 @@ def step_1(step):
     INFO.logger.info(step)
 
 
-@allure.epic("设置页面")
-class TestSetupPage:
+@allure.epic("UIM自动化")
+@allure.feature("登录")
+class TestPasswordLoginPage:
 
-    @allure.feature("注销")
-    @allure.description("注销账号场景")
+    @allure.story("密码登录")
     @pytest.mark.parametrize("test_data", test_data,
                              ids=[i['detail'] for i in test_data])
-    def test_cancel_account(self, test_data, case_skip):
-        # step_1("获取注销账号token")
+    def test_password_login(self, test_data, case_skip):
         expect_code = test_data["assert_data"]["expect_code"]
         expect_msg = test_data["assert_data"]["expect_msg"]
         resData = RequestControl(test_data).request()
@@ -41,4 +40,4 @@ class TestSetupPage:
 
 
 if __name__ == '__main__':
-    pytest.main(["-q", "-s", "-k", "test_setup_page.py"])
+    pytest.main(["-q", "-s", "-k", "test_password_login.py"])

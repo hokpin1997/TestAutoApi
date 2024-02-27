@@ -1,6 +1,6 @@
 test_cancel_account_01:
   detail: 注销已存在账号，注销成功
-  is_run: False
+  is_run:
   url: /user/cancellation
   method: POST
   headers:

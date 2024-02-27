@@ -40,15 +40,12 @@ def case_skip(test_data):
 
 def pytest_collection_modifyitems(items):
     """
-    内置hook函数，当测试用例收集完成时，将收集到的 item 的 name 和 node_id 的中文显示在控制台上
+    内置hook函数，当测试用例收集完成时调整执行顺序
     :return:
     """
-    for item in items:
-        item.name = item.name.encode("utf-8").decode("unicode_escape")
-        item._nodeid = item.nodeid.encode("utf-8").decode("unicode_escape")
 
     # 期望用例顺序,填写testcase方法名
-    appoint_items = ["test_password_login", "test_verification_code", "test_cancel_account", "test_register"]
+    appoint_items = ["test_password_login", "test_verification_code", "test_cancel_account", "test_phone_register"]
 
     # 指定运行顺序
     run_items = []

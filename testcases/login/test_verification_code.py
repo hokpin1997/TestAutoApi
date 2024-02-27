@@ -1,12 +1,12 @@
 # -*- coding:utf-8 -*-
 import allure
 import pytest
+from utils.logUtils.log_control import INFO
 from utils.otherUtils.read_data import GetTestCase
 from utils.otherUtils.allure_tools import allure_step_no
-from utils.logUtils.log_control import INFO
 from utils.requestsUtils.request_control import RequestControl
 
-case_ids = ["test_register_01", "test_register_02"]
+case_ids = ['test_verification_code_01', "test_verification_code_02"]
 # 从缓存中读取用例数据
 test_data = GetTestCase.case_data(case_ids)
 
@@ -17,14 +17,14 @@ def step_1(step):
     INFO.logger.info(step)
 
 
-@allure.epic("注册页面")
-class TestRegisterPage:
+@allure.epic("UIM自动化")
+@allure.feature("登录")
+class TestVerificationLoginPage:
 
-    @allure.feature("注册")
-    @allure.description("注册账号场景")
+    @allure.story("验证码登录")
     @pytest.mark.parametrize("test_data", test_data,
                              ids=[i['detail'] for i in test_data])
-    def test_register(self, test_data, case_skip):
+    def test_verification_code(self, test_data, case_skip):
         expect_code = test_data["assert_data"]["expect_code"]
         expect_msg = test_data["assert_data"]["expect_msg"]
         resData = RequestControl(test_data).request()
@@ -40,4 +40,4 @@ class TestRegisterPage:
 
 
 if __name__ == '__main__':
-    pytest.main(["-q", "-s", "-k", "test_register_page.py"])
+    pytest.main(["-q", "-s", "-k", "test_verification_code.py"])
