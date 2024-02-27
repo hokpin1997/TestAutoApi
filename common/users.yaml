@@ -2,12 +2,10 @@
 ordinary:
   description: 普通账户
   accounts:
-    - 1
-    - 2
-    - 3
+    - (855,60000001,auto_1)
+    - (855,60000002,auto_2)
+    - (855,60000003,auto_3)
 Special:
-  description: 具有群组权限的
-  accounts:
-    - 1
-    - 2
-    - 3
+  - description: 测试注册账号
+    accounts:
+      - (855,60000000,auto_0)

@@ -1,0 +1,39 @@
+test_verification_code_01:
+    detail: 验证码正确，登录成功
+    is_run:
+    url: /user/login
+    method: POST
+    headers:
+      Content-Type: application/json;
+    requestType: json
+    req_data:
+      loginType: 1
+      dialCode: 855
+      password: "6666"
+      phone: "60000001"
+      deviceType: 1
+    dependence_case:
+    dependence_case_data:
+    assert_data:
+      expect_code: 200
+      expect_msg:
+
+test_verification_code_02:
+    detail: 验证码错误，登录失败
+    is_run:
+    url: /user/login
+    method: POST
+    headers:
+      Content-Type: application/json;
+    requestType: json
+    req_data:
+      loginType: 1
+      dialCode: 855
+      password: "6661"
+      phone: "60000001"
+      deviceType: 1
+    dependence_case:
+    dependence_case_data:
+    assert_data:
+      expect_code: 500
+      expect_msg: "验证码错误"
