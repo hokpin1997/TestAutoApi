@@ -1,4 +1,7 @@
+import ast
 import time
+import pytest
+from utils.otherUtils.regular_control import cache_regular
 from utils.logUtils.log_control import ERROR, INFO, WARNING
 
 
@@ -19,6 +22,21 @@ from utils.logUtils.log_control import ERROR, INFO, WARNING
 #         except Exception:
 #             ERROR.logger.error(f"获取token 异常，接口响应: {resData.response_text}")
 #     return do_login
+
+
+@pytest.fixture(scope="function", autouse=True)
+def case_skip(test_data):
+    """处理跳过用例"""
+    if ast.literal_eval(cache_regular(str(test_data.get("is_run")))) is False:
+        # allure.dynamic.title(in_data.detail)
+        # allure_step_no(f"请求URL: {in_data.is_run}")
+        # allure_step_no(f"请求方式: {in_data.method}")
+        # allure_step("请求头: ", in_data.headers)
+        # allure_step("请求数据: ", in_data.data)
+        # allure_step("依赖数据: ", in_data.dependence_case_data)
+        # allure_step("预期数据: ", in_data.assert_data)
+        pytest.skip()
+
 
 def pytest_collection_modifyitems(items):
     """

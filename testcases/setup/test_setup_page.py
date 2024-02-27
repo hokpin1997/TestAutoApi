@@ -24,7 +24,7 @@ class TestSetupPage:
     @allure.description("注销账号场景")
     @pytest.mark.parametrize("test_data", test_data,
                              ids=[i['detail'] for i in test_data])
-    def test_cancel_account(self, test_data):
+    def test_cancel_account(self, test_data, case_skip):
         # step_1("获取注销账号token")
         expect_code = test_data["assert_data"]["expect_code"]
         expect_msg = test_data["assert_data"]["expect_msg"]

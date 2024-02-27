@@ -26,7 +26,7 @@ class TestLoginPage:
     @allure.description("密码登录场景")
     @pytest.mark.parametrize("test_data", test_password_login_data,
                              ids=[i['detail'] for i in test_password_login_data])
-    def test_password_login(self, test_data):
+    def test_password_login(self, test_data, case_skip):
         expect_code = test_data["assert_data"]["expect_code"]
         expect_msg = test_data["assert_data"]["expect_msg"]
         resData = RequestControl(test_data).request()
@@ -44,7 +44,7 @@ class TestLoginPage:
     @allure.description("验证码登录场景")
     @pytest.mark.parametrize("test_data", verification_code_login_data,
                              ids=[i['detail'] for i in verification_code_login_data])
-    def test_verification_code(self, test_data):
+    def test_verification_code(self, test_data, case_skip):
         expect_code = test_data["assert_data"]["expect_code"]
         expect_msg = test_data["assert_data"]["expect_msg"]
         resData = RequestControl(test_data).request()

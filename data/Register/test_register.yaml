@@ -1,5 +1,6 @@
 test_register_01:
     detail: 注册不存在的账号，注册成功
+    is_run:
     url: /user/register
     method: POST
     headers:
@@ -19,6 +20,7 @@ test_register_01:
 
 test_register_02:
     detail: 注册已存在的账号，注册失败
+    is_run:
     url: /user/register
     method: POST
     headers:

@@ -24,7 +24,7 @@ class TestRegisterPage:
     @allure.description("注册账号场景")
     @pytest.mark.parametrize("test_data", test_data,
                              ids=[i['detail'] for i in test_data])
-    def test_register(self, test_data):
+    def test_register(self, test_data, case_skip):
         expect_code = test_data["assert_data"]["expect_code"]
         expect_msg = test_data["assert_data"]["expect_msg"]
         resData = RequestControl(test_data).request()
