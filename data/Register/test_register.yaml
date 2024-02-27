@@ -1,6 +1,3 @@
-# detail：场景描述
-# req_data：接口请求参数
-# assert_data：断言部分
 test_register_01:
     detail: 注册不存在的账号，注册成功
     url: /user/register
