@@ -1,16 +1,14 @@
 # -*- coding:utf-8 -*-
 import allure
 import pytest
+from utils.logUtils.log_control import INFO
 from utils.otherUtils.read_data import GetTestCase
 from utils.otherUtils.allure_tools import allure_step_no
-from utils.logUtils.log_control import INFO
-from utils.otherUtils.regular_control import regular
 from utils.requestsUtils.request_control import RequestControl
 
-case_ids = ["test_phone_register_01", "test_phone_register_02"]
+case_ids = []
 # 从缓存中读取用例数据
 test_data = GetTestCase.case_data(case_ids)
-test_data = eval(regular(str(test_data)))
 
 
 def step_1(step):
@@ -20,13 +18,13 @@ def step_1(step):
 
 
 @allure.epic("UIM自动化")
-@allure.feature("注册模块")
-class TestPhoneRegisterPage:
+@allure.feature("会话设置")
+class TestConversationMute:
 
-    @allure.story("手机号注册")
+    @allure.story("会话静音")
     @pytest.mark.parametrize("test_data", test_data,
                              ids=[i['detail'] for i in test_data])
-    def test_phone_register(self, test_data, case_skip):
+    def test_conversation_mute(self, test_data, case_skip):
         expect_code = test_data["assert_data"]["expect_code"]
         expect_msg = test_data["assert_data"]["expect_msg"]
         resData = RequestControl(test_data).request()
@@ -42,4 +40,4 @@ class TestPhoneRegisterPage:
 
 
 if __name__ == '__main__':
-    pytest.main(["-q", "-s", "-k", "test_phone_register.py"])
+    pytest.main(["-q", "-s", "-k", "test_conversation_mute.py"])

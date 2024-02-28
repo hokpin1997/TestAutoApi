@@ -12,14 +12,10 @@ from utils.otherUtils.regular_control import cache_regular
 from utils.requestsUtils.dependent_case import DependentCase
 from requests_toolbelt import MultipartEncoder
 
-config = GetYamlData(ensure_path_sep("common/conf.yaml")).get_yaml_data()
-api_test_url = config["host"]["api_test"]
-
 
 class RequestControl:
 
     def __init__(self, yaml_data):
-        self.api_root_url = api_test_url
         self.yaml_data = yaml_data
 
     @classmethod
@@ -67,7 +63,7 @@ class RequestControl:
         """ 判断请求类型为json格式 """
         _headers = self.check_headers_str_null(headers)
         _data = self.yaml_data.get("req_data")
-        _url = self.api_root_url + self.yaml_data.get("url")
+        _url = self.yaml_data.get("url")
         res = requests.request(
             method=method,
             url=cache_regular(str(_url)),

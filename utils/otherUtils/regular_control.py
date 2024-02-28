@@ -1,5 +1,87 @@
 # -*- coding:utf-8 -*-
+import random
 import re
+
+from faker import Faker
+from datetime import date, timedelta, datetime
+
+from utils.logUtils.log_control import ERROR
+
+
+class Context:
+    """ 正则替换系统配置和常用参数 """
+
+    def __init__(self):
+        self.faker = Faker(locale='zh_CN')
+
+    @classmethod
+    def random_int(cls) -> int:
+        """
+        :return: 随机数
+        """
+        _data = random.randint(0, 5000)
+        return _data
+
+    def get_phone(self) -> int:
+        """
+        :return: 随机生成手机号码
+        """
+        phone = self.faker.phone_number()
+        return phone
+
+    def get_id_number(self) -> int:
+        """
+
+        :return: 随机生成身份证号码
+        """
+
+        id_number = self.faker.ssn()
+        return id_number
+
+    def get_female_name(self) -> str:
+        """
+
+        :return: 女生姓名
+        """
+        female_name = self.faker.name_female()
+        return female_name
+
+    def get_male_name(self) -> str:
+        """
+
+        :return: 男生姓名
+        """
+        male_name = self.faker.name_male()
+        return male_name
+
+    def get_email(self) -> str:
+        """
+
+        :return: 生成邮箱
+        """
+        email = self.faker.email()
+        return email
+
+    @classmethod
+    def get_time(cls) -> str:
+        """
+        计算当前时间
+        :return:
+        """
+        now_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        return now_time
+
+    @classmethod
+    def host(cls) -> str:
+        from utils import config
+        """ 获取接口域名 """
+        return config.host
+
+    @classmethod
+    def ws_host(cls) -> str:
+        from utils import config
+        """获取ws的host"""
+        return config.ws_host
 
 
 def cache_regular(value):
@@ -35,3 +117,42 @@ def cache_regular(value):
             pass
     return value
 
+
+def regular(target):
+    """
+    正则替换请求数据
+    :return:
+    """
+    try:
+        regular_pattern = r'\${{(.*?)}}'
+        while re.findall(regular_pattern, target):
+            key = re.search(regular_pattern, target).group(1)
+            value_types = ['int:', 'bool:', 'list:', 'dict:', 'tuple:', 'float:']
+            if any(i in key for i in value_types) is True:
+                func_name = key.split(":")[1].split("(")[0]
+                value_name = key.split(":")[1].split("(")[1][:-1]
+                if value_name == "":
+                    value_data = getattr(Context(), func_name)()
+                else:
+                    value_data = getattr(Context(), func_name)(*value_name.split(","))
+                regular_int_pattern = r'\'\${{(.*?)}}\''
+                target = re.sub(regular_int_pattern, str(value_data), target, 1)
+            else:
+                func_name = key.split("(")[0]
+                value_name = key.split("(")[1][:-1]
+                if value_name == "":
+                    value_data = getattr(Context(), func_name)()
+                else:
+                    value_data = getattr(Context(), func_name)(*value_name.split(","))
+                target = re.sub(regular_pattern, str(value_data), target, 1)
+        return target
+
+    except AttributeError:
+        ERROR.logger.error("未找到对应的替换的数据, 请检查数据是否正确 %s", target)
+        raise
+
+
+if __name__ == '__main__':
+    a = "${{ws_host()}} aaa"
+    b = regular(a)
+    print(b)

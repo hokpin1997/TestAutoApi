@@ -4,11 +4,13 @@ import pytest
 from utils.logUtils.log_control import INFO
 from utils.otherUtils.read_data import GetTestCase
 from utils.otherUtils.allure_tools import allure_step_no
+from utils.otherUtils.regular_control import regular
 from utils.requestsUtils.request_control import RequestControl
 
 case_ids = ['test_verification_code_01', "test_verification_code_02"]
 # 从缓存中读取用例数据
 test_data = GetTestCase.case_data(case_ids)
+test_data = eval(regular(str(test_data)))
 
 
 def step_1(step):

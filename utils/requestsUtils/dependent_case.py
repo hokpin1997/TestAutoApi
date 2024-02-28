@@ -6,10 +6,10 @@ from utils.cache_process.cache_control import CacheHandler
 from utils.otherUtils.common import jsonpath_replace, ensure_path_sep
 from utils.otherUtils.exceptions import ValueNotFoundError
 from utils.otherUtils.read_data import GetYamlData
-from utils.otherUtils.regular_control import cache_regular
+from utils.otherUtils.regular_control import cache_regular, regular
 
 config = GetYamlData(ensure_path_sep("common/conf.yaml")).get_yaml_data()
-api_test_url = config["host"]["api_test"]
+api_test_url = config["host"]
 
 
 class DependentCase:
@@ -90,7 +90,7 @@ class DependentCase:
                     if _case_id == 'self':
                         pass
                     else:
-                        test_data = self.get_cache(_case_id)
+                        test_data = eval(regular(str(self.get_cache(_case_id))))
                         if _is_dependence_login:
                             test_data["req_data"] = dependence_case_data.get("dependence_login").get("req_data")
                         test_data = ast.literal_eval(cache_regular(str(test_data)))

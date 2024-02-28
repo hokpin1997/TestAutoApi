@@ -17,3 +17,9 @@ class ResponseData(BaseModel):
     assert_data: Dict
     res_time: Union[int, float]
     status_code: int
+
+
+class Config(BaseModel):
+    host: Text
+    ws_host: Text
+    mysql_db: Dict

@@ -1,0 +1,25 @@
+test_conversation_mute_01:
+    detail: 设置未静音的会话，设置静音成功
+    is_run: Flase
+    host: ${{ws_host()}}
+    url:
+    method:
+    headers:
+      Content-Type: application/json;
+    requestType: ws
+    ws_data:
+      reqId:
+      action: "/im/conversationMembers/chatSetting"
+      data:
+        clientId: "518365654619461"
+        type: "DO_NOT_DISTURB"
+        on: True
+        conversationId: 519696758100421
+    req_data:
+      token:
+      platform: 1
+    dependence_case:
+    dependence_case_data:
+    assert_data:
+      expect_code: 200
+      expect_msg:
