@@ -1,33 +1,59 @@
 import ast
 import time
 import pytest
+from utils import ensure_path_sep
+from utils.cache_process.cache_control import CacheHandler
 from utils.otherUtils.regular_control import cache_regular
 from utils.logUtils.log_control import ERROR, INFO, WARNING
+from utils.requestsUtils.request_control import RequestControl
+from utils.otherUtils.read_data import GetYamlData
+
+conf = GetYamlData(ensure_path_sep("common/conf.yaml")).get_yaml_data()
+host = conf.get("host")
 
 
-# @pytest.fixture(scope="session")
-# def work_login_init(request):
-#     """
-#     获取登录的cookie
-#     :return:
-#     """
-#     def do_login(test_data):
-#         resData = password_login(test_data)
-#         try:
-#             token = resData.response_json["data"]["token"]
-#             wecloudImToken = resData.response_json["data"]["wecloudImToken"]
-#             # 将登录后的cookie写入缓存中
-#             CacheHandler.update_cache(cache_name='login_token', value=token)
-#             CacheHandler.update_cache(cache_name='login_wecloudImToken', value=wecloudImToken)
-#         except Exception:
-#             ERROR.logger.error(f"获取token 异常，接口响应: {resData.response_text}")
-#     return do_login
+@pytest.fixture(scope="session", autouse=True)
+def work_login_init():
+    """
+    获取登录的cookie
+    :return:
+    """
+    try:
+        test_data = {
+            "detail": "获取工作token",
+            "url": host + "/user/login",
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/json;"
+            },
+            "requestType": "json",
+            "req_data": {
+                "loginType": "0",
+                "dialCode": "855",
+                "password": "flgpGS1oMqfvM4ewFrQSBg==",
+                "phone": "60000002",
+                "deviceType": "1",
+            },
+            "dependence_case": None,
+            "dependence_case_data": None,
+            "assert_data": None,
+        }
+        resData = RequestControl(test_data).request()
+        token = resData.response_json["data"]["token"]
+        wecloudImToken = resData.response_json["data"]["wecloudImToken"]
+        # 将登录后的cookie写入缓存中
+        CacheHandler.update_cache(cache_name='login_token', value=token)
+        CacheHandler.update_cache(cache_name='login_wecloudImToken', value=wecloudImToken)
+    except Exception as e:
+        ERROR.logger.error(f"获取token 异常，接口响应")
+        raise e
 
 
 @pytest.fixture(scope="function", autouse=True)
 def case_skip(test_data):
     """处理跳过用例"""
-    if ast.literal_eval(cache_regular(str(test_data.get("is_run")))) is False:
+    detail = test_data.get("detail")
+    if ast.literal_eval(cache_regular(str(test_data.get("is_run")))) is False and detail != "获取工作token":
         # allure.dynamic.title(in_data.detail)
         # allure_step_no(f"请求URL: {in_data.is_run}")
         # allure_step_no(f"请求方式: {in_data.method}")

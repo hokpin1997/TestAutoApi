@@ -9,3 +9,6 @@ Special:
   - description: 测试注册账号
     accounts:
       - (855,60000000,auto_0)
+  - description: 测试静音账号，存在与60000003的会话
+      accounts:
+        - (855,60000002,auto_1)

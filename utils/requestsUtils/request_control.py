@@ -2,24 +2,16 @@
 import ast
 
 import requests
-import json as complexjson
-from utils.cache_process.cache_control import CacheHandler
 from utils.logUtils.log_decorator import log_decorator
-from utils.otherUtils.common import ensure_path_sep
 from utils.otherUtils.models import ResponseData
-from utils.otherUtils.read_data import GetYamlData
 from utils.otherUtils.regular_control import cache_regular
 from utils.requestsUtils.dependent_case import DependentCase
 from requests_toolbelt import MultipartEncoder
-
-config = GetYamlData(ensure_path_sep("common/conf.yaml")).get_yaml_data()
-api_test_url = config["host"]["api_test"]
 
 
 class RequestControl:
 
     def __init__(self, yaml_data):
-        self.api_root_url = api_test_url
         self.yaml_data = yaml_data
 
     @classmethod
@@ -64,10 +56,12 @@ class RequestControl:
         return request_data, header
 
     def request_type_for_json(self, headers, method, **kwargs):
+        import requests.packages.urllib3
+        requests.packages.urllib3.disable_warnings()
         """ 判断请求类型为json格式 """
         _headers = self.check_headers_str_null(headers)
         _data = self.yaml_data.get("req_data")
-        _url = self.api_root_url + self.yaml_data.get("url")
+        _url = self.yaml_data.get("url")
         res = requests.request(
             method=method,
             url=cache_regular(str(_url)),
@@ -84,7 +78,7 @@ class RequestControl:
 
         """处理 requestType 为 params """
         _data = self.yaml_data.get("req_data")
-        url = self.api_root_url + self.yaml_data.get("url")
+        url = self.yaml_data.get("url")
         if _data is not None:
             # url 拼接的方式传参
             params_data = "?"
@@ -115,7 +109,7 @@ class RequestControl:
             ast.literal_eval(cache_regular(str(data))),
             headers
         )
-        _url = self.api_root_url + self.yaml_data.get("url")
+        _url = self.yaml_data.get("url")
         res = requests.request(
             method=method,
             url=cache_regular(_url),
@@ -174,4 +168,3 @@ class RequestControl:
             return round(res.elapsed.total_seconds() * 1000, 2)
         except AttributeError:
             return 0.00
-

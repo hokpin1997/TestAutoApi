@@ -1,6 +1,7 @@
-test_register_01:
-    detail: 注册不存在的账号，注册成功
+test_phone_register_01:
+    detail: 手机号注册不存在的账号，注册成功
     is_run:
+    host: ${{host()}}
     url: /user/register
     method: POST
     headers:
@@ -18,9 +19,10 @@ test_register_01:
       expect_code: 200
       expect_msg:
 
-test_register_02:
-    detail: 注册已存在的账号，注册失败
+test_phone_register_02:
+    detail: 手机号注册存在的账号，注册失败
     is_run:
+    host: ${{host()}}
     url: /user/register
     method: POST
     headers:

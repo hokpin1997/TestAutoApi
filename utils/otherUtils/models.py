@@ -14,6 +14,12 @@ class ResponseData(BaseModel):
     yaml_data: Any
     headers: Dict
     cookie: Dict
-    assert_data: Dict
+    assert_data: Any
     res_time: Union[int, float]
     status_code: int
+
+
+class Config(BaseModel):
+    host: Text
+    ws_host: Text
+    mysql_db: Dict

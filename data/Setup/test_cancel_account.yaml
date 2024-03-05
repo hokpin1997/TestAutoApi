@@ -1,6 +1,7 @@
 test_cancel_account_01:
   detail: 注销已存在账号，注销成功
   is_run:
+  host: ${{host()}}
   url: /user/cancellation
   method: POST
   headers:
@@ -11,7 +12,7 @@ test_cancel_account_01:
     phone: "60000000"
   dependence_case: True
   dependence_case_data:
-    - case_id: test_register_01
+    - case_id: test_phone_register_01
       dependence_login:
       dependent_data:
         - dependent_type: request

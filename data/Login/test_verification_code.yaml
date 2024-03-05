@@ -1,6 +1,7 @@
 test_verification_code_01:
     detail: 验证码正确，登录成功
     is_run:
+    host: ${{host()}}
     url: /user/login
     method: POST
     headers:
@@ -21,6 +22,7 @@ test_verification_code_01:
 test_verification_code_02:
     detail: 验证码错误，登录失败
     is_run:
+    host: ${{host()}}
     url: /user/login
     method: POST
     headers:

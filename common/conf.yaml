@@ -1,6 +1,8 @@
-host:
-  # 测试环境
-  api_test: https://mos-test.metathought.cc
+# 域名
+host: https://mos-test.metathought.cc
+
+# websocket 域名
+ws_host: wss://mos-test.metathought.cc/ws?
 
 # 数据库相关配置
 mysql_db:
