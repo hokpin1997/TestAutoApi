@@ -4,11 +4,13 @@ import pytest
 from utils.logUtils.log_control import INFO
 from utils.otherUtils.read_data import GetTestCase
 from utils.otherUtils.allure_tools import allure_step_no
+from utils.otherUtils.regular_control import regular
 from utils.requestsUtils.request_control import RequestControl
 
-case_ids = []
+case_ids = ["test_conversation_mute_01"]
 # 从缓存中读取用例数据
 test_data = GetTestCase.case_data(case_ids)
+test_data = eval(regular(str(test_data)))
 
 
 def step_1(step):
@@ -24,10 +26,14 @@ class TestConversationMute:
     @allure.story("会话静音")
     @pytest.mark.parametrize("test_data", test_data,
                              ids=[i['detail'] for i in test_data])
-    def test_conversation_mute(self, test_data, case_skip):
+    def test_conversation_mute(self, test_data):
         expect_code = test_data["assert_data"]["expect_code"]
         expect_msg = test_data["assert_data"]["expect_msg"]
-        resData = RequestControl(test_data).request()
+        protocol_type = test_data.get("protocol_type")
+        if protocol_type and protocol_type == "WebSocket":
+            pass
+        else:
+            resData = RequestControl(test_data).request()
         assert resData.status_code == 200
 
         # 业务code
@@ -41,3 +47,4 @@ class TestConversationMute:
 
 if __name__ == '__main__':
     pytest.main(["-q", "-s", "-k", "test_conversation_mute.py"])
+

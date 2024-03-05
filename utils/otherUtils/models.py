@@ -14,7 +14,7 @@ class ResponseData(BaseModel):
     yaml_data: Any
     headers: Dict
     cookie: Dict
-    assert_data: Dict
+    assert_data: Any
     res_time: Union[int, float]
     status_code: int
 
